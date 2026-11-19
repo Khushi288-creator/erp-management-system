@@ -21,6 +21,12 @@ exports.errorHandler = (err, req, res, next) => {
     message = Object.values(err.errors).map((e) => e.message).join(", ");
   }
 
+  // Wrong MongoDB ID (e.g. /api/products/abc)
+  if (err.name === "CastError") {
+    statusCode = 400;
+    message = "Invalid ID format";
+  }
+
   // Invalid or expired JWT
   if (err.name === "JsonWebTokenError") {
     statusCode = 401;
