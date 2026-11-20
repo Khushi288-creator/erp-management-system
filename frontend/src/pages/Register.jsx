@@ -3,8 +3,9 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Box, Paper, TextField, Button, Typography, Link } from "@mui/material";
+import { TextField, Button, Typography, Link } from "@mui/material";
 import { registerUser } from "../store/authSlice";
+import AuthShell from "../components/AuthShell";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -31,11 +32,7 @@ export default function Register() {
 
   const field = (name, label, type = "text") => (
     <TextField
-      fullWidth
-      margin="normal"
-      label={label}
-      name={name}
-      type={type}
+      fullWidth margin="normal" label={label} name={name} type={type}
       value={formik.values[name]}
       onChange={formik.handleChange}
       onBlur={formik.handleBlur}
@@ -45,26 +42,19 @@ export default function Register() {
   );
 
   return (
-    <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", p: 2 }}>
-      <Paper sx={{ p: 4, width: "100%", maxWidth: 400 }}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          Create Account
-        </Typography>
-        <form onSubmit={formik.handleSubmit}>
-          {field("name", "Name")}
-          {field("email", "Email")}
-          {field("password", "Password", "password")}
-          <Button type="submit" fullWidth variant="contained" disabled={loading} sx={{ mt: 2 }}>
-            {loading ? "Please wait..." : "Register"}
-          </Button>
-        </form>
-        <Typography variant="body2" sx={{ mt: 2 }}>
-          Already have an account?{" "}
-          <Link component={RouterLink} to="/login">
-            Login
-          </Link>
-        </Typography>
-      </Paper>
-    </Box>
+    <AuthShell title="Create account" subtitle="New accounts start with the Sales role">
+      <form onSubmit={formik.handleSubmit}>
+        {field("name", "Name")}
+        {field("email", "Email")}
+        {field("password", "Password", "password")}
+        <Button type="submit" fullWidth size="large" variant="contained" disabled={loading} sx={{ mt: 2 }}>
+          {loading ? "Please wait..." : "Register"}
+        </Button>
+      </form>
+      <Typography variant="body2" sx={{ mt: 3 }}>
+        Already have an account?{" "}
+        <Link component={RouterLink} to="/login">Login</Link>
+      </Typography>
+    </AuthShell>
   );
 }
